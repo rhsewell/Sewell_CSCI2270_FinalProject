@@ -1,0 +1,7 @@
+r,Are you thinking of something that is alive?
+y,Is it a mammal?
+n,Is it larger than a car?
+yy,a tiger
+yn,a lizard
+ny,a house
+nn,a box
