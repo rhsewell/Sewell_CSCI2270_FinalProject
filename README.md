@@ -33,13 +33,27 @@ Is it a mammal?
 Is it a feline?
 "Question found and changed."
 
-2. Change a Question
+3. Change an Answer
 The same method is called for finding a question and the same results occur.
 
 4. Print Question and Answer Base
 Prints all questions and answers from the top of the tree down when selected. No user input required.
 
-5. Quit
+5. Add Question
+Asks for the new question, the question prior to it, and whether the new question will be a yes or a no node from the previous question. Also asks if the question place it is replacing will be a yes or a no for to the added question. Lastly it asks for the alternative answer to the question that is not already present.
+Sample:
+"Enter the question to be added."
+Is it abstract?
+"Enter the question prior to this one."
+Is it larger than a car?
+"Is the new question a yes or no to the previous question?"
+n
+"Would 'a box' be a (y)es or (n)o following question to your new question?"
+n
+"What is the yes answer to your your question?"
+a number
+
+6. Quit
 Main program loop exits and the destructor is called, then program is terminated.
 
 DEPENDENCIES
@@ -52,4 +66,4 @@ GROUP MEMBERS
 Robert Sewell
 
 OPEN ISSUES/BUGS
-Currently, there are no known issues; however there are several improvements that I am looking to make. As of now the text file is only updated after the user wins instead of also happening when the user changes a question or an answer (as only the tree in that instance is changed), so it would be nice to have another function to do this. Also, I'm questioning if it would be logical to add an option to delete a node, as the very nature of this requires each child node to be reliant on only its parents question and cannot be moved to some other question without checking to see if it is a logical placement, but if someone can think of a way to do this that makes sense, that could be added. Lastly, I'm hoping to add a method to insert a question into the tree given it's parent and wether it would be a yes or a no to it's parent's question.
+Currently, there are no known issues; however there are several improvements that I am looking to make. I'm questioning if it would be logical to add an option to delete a node, as the very nature of this requires each child node to be reliant on only its parents question and cannot be moved to some other question without checking to see if it is a logical placement, but if someone can think of a way to do this that makes sense, that could be added. There are other potential areas to improve userability that I would consider adding.
