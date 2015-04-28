@@ -1,6 +1,7 @@
 #ifndef QUESTIONTREE_H
 #define QUESTIONTREE_H
 #include <iostream>
+#include <vector>
 
 struct Question{
     std::string question;
@@ -33,9 +34,15 @@ class QuestionTree
         void setFound();
         bool found;
         void printQuestions(Question *node);
+        void newQuestion(Question *runner, std::string newques,std::string prevques,std::string ans);
+        void recordFile(Question *runner);
+        std::vector<std::string> returnFile();
+        void clearFile();
+        void writeToFile();
     protected:
     private:
         Question *root;
+        std::vector<std::string> filestuff;
 };
 
 #endif // QUESTIONTREE_H

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdlib.h>
+#include <vector>
 
 QuestionTree::QuestionTree()
 {
@@ -266,7 +267,7 @@ void QuestionTree::updateQuestions(Question *onQuestion)
     std::string userAnswer;
     std::string userQuestion;
     std::string selection;
-    std::cout<<"What were you thinking of?"<<std::endl//expects an answer with proper article
+    std::cout<<"What were you thinking of?"<<std::endl;//expects an answer with proper article
     std::cin.ignore();
     getline(std::cin,userAnswer);
     std::cout<<"What is a question to differentiate between "<<userAnswer<<" and "<<onQuestion->question<<"?"<<std::endl;//expects full question with question mark and proper capitalization
@@ -281,7 +282,6 @@ void QuestionTree::updateQuestions(Question *onQuestion)
     newA->question=userAnswer;
     newA->noNode=NULL;
     newA->yesNode=NULL;
-
     if(onQuestion==onQuestion->parent->yesNode)
         onQuestion->parent->yesNode=newQ;
     else
@@ -336,12 +336,12 @@ void QuestionTree::replaceQuestion(Question *onQuestion, Question *newQ, Questio
         std::stringstream s(line);
         std::getline(s,pos,',');
         std::getline(s,ques,',');
-        if(filein.eof())
-            break;
         if(ques==onQuestion->question)
         {
             fileout<<newQ->position<<","<<newQ->question<<'\n';
         }
+        if(filein.eof())
+            break;
         else
         {
             fileout<<line<<'\n';
@@ -435,4 +435,215 @@ void QuestionTree::printQuestions(Question *runner)
     {
         printQuestions(runner->noNode);
     }
+}
+
+/*
+Function prototype:
+void QuestionTree::newQuestion(Question*,string,string,string)
+
+Function description:
+Allows the user to insert a new question into the tree. Asks questions for the location of the new question.
+
+Example:
+QuestionTree *q;
+q->newQuestion(Question*,string,string);
+
+Preconditions:
+Tree must be built with a root and the new question location must be known.
+
+Post conditions:
+New question is added and answers and sequential questions are put into place.
+*/
+void QuestionTree::newQuestion(Question *runner, std::string newques,std::string prevques,std::string ans)
+{
+    Question *temp=new Question;
+    Question *other=new Question;
+    if(runner->question==prevques)
+    {
+        std::string ansfollow,otherques;
+        temp->parent=runner;
+        temp->question=newques;
+        if(ans=="y")
+        {
+            std::cout<<"Would '"<<runner->yesNode->question<<"' be a (y)es or (n)o following question to your new question?"<<std::endl;
+            std::cin>>ansfollow;
+            if(ansfollow=="y")
+            {
+                temp->position=runner->yesNode->position;
+                temp->yesNode=runner->yesNode;
+                temp->yesNode->position=temp->yesNode->position+"y";
+                runner->yesNode=temp;
+                std::cout<<"What is the no answer to your your question?"<<std::endl;
+                std::cin.ignore();
+                std::getline(std::cin,otherques);
+                temp->noNode=other;
+                other->parent=temp;
+                other->position=temp->position+"n";
+                other->question=otherques;
+                other->noNode=NULL;
+                other->yesNode=NULL;
+            }
+            else
+            {
+                temp->position=runner->noNode->position;
+                temp->noNode=runner->noNode;
+                temp->noNode->position=temp->noNode->position+"n";
+                runner->noNode=temp;
+                std::cout<<"What is the yes answer to your your question?"<<std::endl;
+                std::cin.ignore();
+                std::getline(std::cin,otherques);
+                temp->yesNode=other;
+                other->parent=temp;
+                other->position=temp->position+"y";
+                other->question=otherques;
+                other->noNode=NULL;
+                other->yesNode=NULL;
+            }
+        }
+        else
+        {
+            std::cout<<"Would '"<<runner->noNode->question<<"' be a (y)es or (n)o following question to your new question?"<<std::endl;
+            std::cin>>ansfollow;
+            if(ansfollow=="y")
+            {
+                temp->position=runner->yesNode->position;
+                temp->yesNode=runner->yesNode;
+                temp->yesNode->position=temp->yesNode->position+"y";
+                runner->yesNode=temp;
+                std::cout<<"What is the no answer to your your question?"<<std::endl;
+                std::cin.ignore();
+                std::getline(std::cin,otherques);
+                temp->noNode=other;
+                other->parent=temp;
+                other->position=temp->position+"n";
+                other->question=otherques;
+                other->noNode=NULL;
+                other->yesNode=NULL;
+            }
+            else
+            {
+                temp->position=runner->noNode->position;
+                temp->noNode=runner->noNode;
+                temp->noNode->position=temp->noNode->position+"n";
+                runner->noNode=temp;
+                std::cout<<"What is the yes answer to your your question?"<<std::endl;
+                std::cin.ignore();
+                std::getline(std::cin,otherques);
+                temp->yesNode=other;
+                other->parent=temp;
+                other->position=temp->position+"y";
+                other->question=otherques;
+                other->noNode=NULL;
+                other->yesNode=NULL;
+            }
+        }
+        found=true;
+    }
+    if(runner->noNode!=NULL)
+    {
+        newQuestion(runner->noNode,newques,prevques,ans);
+    }
+    if(runner->yesNode!=NULL)
+    {
+        newQuestion(runner->yesNode,newques,prevques,ans);
+    }
+}
+
+/*
+Function prototype:
+void QuestionTree::recordFile(Question*)
+
+Function description:
+Records the tree into a a vector for printing out later.
+
+Example:
+QuestionTree *q;
+q->recordFile(Question*,string,string);
+
+Preconditions:
+Tree is built and vector is cleared.
+
+Post conditions:
+Vector now contains the position and question of every node.
+*/
+void QuestionTree::recordFile(Question *runner)
+{
+    filestuff.push_back(runner->position+","+runner->question+'\n');
+    if(runner->yesNode!=NULL)
+    {
+        recordFile(runner->yesNode);
+    }
+    if(runner->noNode!=NULL)
+    {
+        recordFile(runner->noNode);
+    }
+}
+
+/*
+Function prototype:
+void QuestionTree::returnFile()
+
+Function description:
+Returns the vector containing the node information.
+
+Example:
+QuestionTree *q;
+q->returnFile();
+
+Preconditions:
+Vector file exists.
+
+Post conditions:
+The vector is now accessible.
+*/
+std::vector<std::string> QuestionTree::returnFile()
+{
+    return filestuff;
+}
+
+/*
+Function prototype:
+void QuestionTree::clearFile()
+
+Function description:
+Clears the vector for right to it in the future.
+
+Example:
+QuestionTree *q;
+q->clearFile();
+
+Preconditions:
+Vector file exists.
+
+Post conditions:
+The vector is cleared.
+*/
+void QuestionTree::clearFile()
+{
+    filestuff.clear();
+}
+
+/*
+Function prototype:
+void QuestionTree::writeToFile()
+
+Function description:
+Takes the vector containing node information and writes over the QuestionFile.
+
+Example:
+QuestionTree *q;
+q->writeToFile();
+
+Preconditions:
+Vector file exists and contains tree information.
+
+Post conditions:
+QuestionFile is now updated.
+*/
+void QuestionTree::writeToFile()
+{
+    std::ofstream file("QuestionFile.txt");
+    for(int i=0;i<filestuff.size();i++)
+        file<<filestuff[i];
+    file.close();
 }

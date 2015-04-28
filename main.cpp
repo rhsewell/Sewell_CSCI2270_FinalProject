@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <sstream>
+#include <vector>
 #include "QuestionTree.h"
 
 using namespace std;
@@ -38,8 +39,9 @@ int main()
 
     //Main program loop
     int option;
-    string ques,newques;
-    while(option!=5)
+    string ques,newques,ans;
+    vector<string> filestuff;
+    while(option!=6)
     {
         option=0;
         cout<<"=============Main Menu============"<<endl;
@@ -47,7 +49,8 @@ int main()
         cout<<"2. Change a Question"<<endl;
         cout<<"3. Change an Answer"<<endl;
         cout<<"4. Print Question and Answer Base"<<endl;
-        cout<<"5. Quit"<<endl;
+        cout<<"5. Add Question"<<endl;
+        cout<<"6. Quit"<<endl;
         cin>>option;
         if(option==1)
         {
@@ -98,6 +101,9 @@ int main()
             if(q->isFound()){
                 cout<<"Question found and changed.\n"<<endl;
                 q->setFound();
+                q->recordFile(q->getRoot());
+                q->writeToFile();
+                q->clearFile();
             }
             else
                 cout<<"Question not found.\n"<<endl;
@@ -113,6 +119,9 @@ int main()
             if(q->isFound()){
                 cout<<"Answer found and changed.\n"<<endl;
                 q->setFound();
+                q->recordFile(q->getRoot());
+                q->writeToFile();
+                q->clearFile();
             }
             else
                 cout<<"Answer not found.\n"<<endl;
@@ -122,6 +131,33 @@ int main()
             cout<<"\n";
             q->printQuestions(q->getRoot());
             cout<<"\n";
+        }
+        if(option==5)
+        {
+            cout<<"Enter the question to be added."<<endl;
+            cin.ignore();
+            getline(cin,newques);
+            cout<<"Enter the question prior to this one."<<endl;
+            getline(cin,ques);
+            cout<<"Is the new question a yes or no to the previous question? (enter y or n)"<<endl;
+            cin>>ans;
+            q->newQuestion(q->getRoot(),newques,ques,ans);
+            if(q->isFound())
+            {
+                cout<<"Question added.\n"<<endl;
+                q->setFound();
+                q->recordFile(q->getRoot());
+                q->writeToFile();
+                q->clearFile();
+            }
+            else
+            {
+                cout<<"Previous question was not found, so nothing was added.\n"<<endl;
+            }
+        }
+        if(option > 6)
+        {
+            cout<<"Invalid selection.\n"<<endl;
         }
     }
     cout<<"Goodbye!"<<endl;
