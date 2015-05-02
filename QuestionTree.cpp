@@ -272,8 +272,15 @@ void QuestionTree::updateQuestions(Question *onQuestion)
     getline(std::cin,userAnswer);
     std::cout<<"What is a question to differentiate between "<<userAnswer<<" and "<<onQuestion->question<<"?"<<std::endl;//expects full question with question mark and proper capitalization
     getline(std::cin,userQuestion);
-    std::cout<<"Would your answer be a yes or a no to this question (enter y or n)?"<<std::endl;//Determines where to put user's answer and the previous answer
-    std::cin>>selection;
+    bool valid  = false;
+    while(valid == false){
+        std::cout<<"Would your answer be a yes or a no to this question (enter y or n)?"<<std::endl;//Determines where to put user's answer and the previous answer
+        std::cin>>selection;
+        if(selection == "y" || selection == "n")
+            valid = true;
+        else
+            std::cout<<"Invalid option, please select y or n."<<std::endl;
+    }
 
     Question *newQ=new Question;
     Question *newA=new Question;
