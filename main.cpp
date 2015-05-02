@@ -38,12 +38,13 @@ int main()
     file.close();
 
     //Main program loop
-    int option;
+    string option;
     string ques,newques,ans;
     vector<string> filestuff;
-    while(option!=6)
+    cout<<"herro"<<endl;
+    while(option!="6")
     {
-        option=0;
+        option="0";
         cout<<"=============Main Menu============"<<endl;
         cout<<"1. Play Game"<<endl;
         cout<<"2. Change a Question"<<endl;
@@ -52,7 +53,7 @@ int main()
         cout<<"5. Add Question"<<endl;
         cout<<"6. Quit"<<endl;
         cin>>option;
-        if(option==1)
+        if(option=="1")
         {
             string selection;
             cout<<"Starting new game:\n"<<endl;
@@ -90,7 +91,7 @@ int main()
                 }
             }
         }
-        if(option==2)
+        else if(option=="2")
         {
             cout<<"Enter the question to be changed?"<<endl;
             cin.ignore();
@@ -108,7 +109,7 @@ int main()
             else
                 cout<<"Question not found.\n"<<endl;
         }
-        if(option==3)
+        else if(option=="3")
         {
             cout<<"Enter the answer to be changed be changed?"<<endl;
             cin.ignore();
@@ -126,13 +127,13 @@ int main()
             else
                 cout<<"Answer not found.\n"<<endl;
         }
-        if(option==4)
+        else if(option=="4")
         {
             cout<<"\n";
             q->printQuestions(q->getRoot());
             cout<<"\n";
         }
-        if(option==5)
+        else if(option=="5")
         {
             cout<<"Enter the question to be added."<<endl;
             cin.ignore();
@@ -155,7 +156,7 @@ int main()
                 cout<<"Previous question was not found, so nothing was added.\n"<<endl;
             }
         }
-        if(option > 6)
+        else
         {
             cout<<"Invalid selection.\n"<<endl;
         }
